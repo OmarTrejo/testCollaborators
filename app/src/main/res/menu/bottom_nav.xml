@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/consultaFragment"
+        android:title="@string/consulta_menu"
+        android:icon="@drawable/ic_list" />
+    <item
+        android:id="@+id/registerFragment"
+        android:title="@string/registro"
+        android:icon="@drawable/ic_add_person"/>
+    <item
+        android:id="@+id/logOutFragment"
+        android:title="@string/cerrar_sesion"
+        android:icon="@drawable/ic_log"/>
+</menu>

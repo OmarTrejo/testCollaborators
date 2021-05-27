@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">TestCollaborators</string>
+    <string name="log_in">INICIO DE SESIÓN</string>
+    <string name="email">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="iniciar_sesion">Iniciar sesión</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="new_user_title">NUEVO COLABORADOR</string>
+    <string name="register_name">Nombre completo</string>
+    <string name="register_email">Correo electrónico</string>
+    <string name="register_password">Contraseña</string>
+    <string name="register_password_confirm">Confirmar contraseña</string>
+    <string name="new_register">Guardar información</string>
+    <string name="seleccionar_ubicacion">Capturar ubicación</string>
+    <string name="register_lat">Latitud</string>
+    <string name="register_long">Longitud</string>
+    <string name="consulta_menu">Colaboradores</string>
+    <string name="registro">Nuevo colaborador</string>
+    <string name="cerrar_sesion">Salir</string>
+</resources>
