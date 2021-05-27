@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.ktx.Firebase
@@ -18,8 +21,18 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val BtnIniciarSesion = findViewById<MaterialButton>(R.id.BtnIniciarSesion)
+        val TxtPassword = findViewById<TextInputLayout>(R.id.TxtPassword)
+        val ETxtPassword = findViewById<TextInputEditText>(R.id.ETxtPassword)
+        val TxtEmail = findViewById<TextInputLayout>(R.id.TxtEmail)
+        val ETxtEmail = findViewById<TextInputEditText>(R.id.ETxtEmail)
+
         auth = FirebaseAuth.getInstance()
 
+        BtnIniciarSesion.setOnClickListener({
+            // Validar que haya datos
+//            if ( ETxtEmail.text.length > 0 )
+        })
 
     }
 
