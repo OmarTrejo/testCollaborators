@@ -22,4 +22,7 @@
     <string name="title">Mensaje</string>
     <string name="no">No</string>
     <string name="si">Si, cerrar sesión</string>
+    <string name="name">NOMBRE APELLIDO</string>
+    <string name="email_ex">username@username.com.mx</string>
+    <string name="colaboradores">COLABORADORES REGISTRADOS</string>
 </resources>
