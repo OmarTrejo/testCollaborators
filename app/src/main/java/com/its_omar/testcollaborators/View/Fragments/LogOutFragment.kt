@@ -1,33 +1,29 @@
 package com.its_omar.testcollaborators.View.Fragments
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
+import com.its_omar.testcollaborators.LoginActivity
 import com.its_omar.testcollaborators.R
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [LogOutFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class LogOutFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private lateinit var auth : FirebaseAuth
+    private lateinit var sharedPreferences: SharedPreferences
+    private var preferences = "colaboradores_preferences"
+
+    companion object
+    {
+        private const val TAG = "LogOutFragment"
     }
 
     override fun onCreateView(
@@ -35,26 +31,44 @@ class LogOutFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_log_out, container, false)
+        val binding = inflater.inflate(R.layout.fragment_log_out, container, false)
+
+        // Inicialize auth
+        auth = FirebaseAuth.getInstance()
+
+        // Inicialize Shared preferences
+        sharedPreferences = requireActivity().getSharedPreferences(preferences, Context.MODE_PRIVATE)
+
+        MaterialAlertDialogBuilder( requireContext(), R.style.ThemeOverlay_MaterialComponents_MaterialCalendar_Fullscreen)
+            .setMessage( resources.getString( R.string.message_logout ))
+            .setTitle( resources.getString( R.string.title ))
+            .setNegativeButton( resources.getString(R.string.no), null)
+            .setPositiveButton( resources.getString(R.string.si), { dialog, which ->
+                // Respond to positive button press
+                auth.signOut()
+                deleteSession()
+                val intent =  Intent( requireContext(), LoginActivity::class.java)
+                startActivity(intent)
+                requireActivity().finish()
+            }).show()
+
+        return binding
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LogOutFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            LogOutFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun deleteSession() {
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.apply()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val currentUser = auth.currentUser
+        if (currentUser != null) reload()
+    }
+
+    private fun reload() {
+        Log.d(TAG, "reload: ")
     }
 }

@@ -1,39 +1,70 @@
 package com.its_omar.testcollaborators
 
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.ktx.Firebase
 import com.its_omar.testcollaborators.View.IndexActivity
 
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var auth : FirebaseAuth;
+    private lateinit var auth : FirebaseAuth
+    private lateinit var sharedPreferences: SharedPreferences
+    private val preferences = "colaboradores_preferences"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_login)
 
         val BtnIniciarSesion = findViewById<MaterialButton>(R.id.BtnIniciarSesion)
-        val TxtPassword = findViewById<TextInputLayout>(R.id.TxtPassword)
         val ETxtPassword = findViewById<TextInputEditText>(R.id.ETxtPassword)
-        val TxtEmail = findViewById<TextInputLayout>(R.id.TxtEmail)
         val ETxtEmail = findViewById<TextInputEditText>(R.id.ETxtEmail)
 
         auth = FirebaseAuth.getInstance()
 
-        BtnIniciarSesion.setOnClickListener({
-            // Validar que haya datos
-//            if ( ETxtEmail.text.length > 0 )
-        })
+        // Inicializa shared preferences
+        sharedPreferences = this.getSharedPreferences( preferences, Context.MODE_PRIVATE )
 
+        if ( validateLogin() )
+        {
+            val intent = Intent(this, IndexActivity::class.java)
+            startActivity(intent)
+        }
+
+        BtnIniciarSesion.setOnClickListener {
+            // Validar que haya datos
+            if (ETxtEmail.length() > 0 && ETxtPassword.length() > 0) {
+                if (validateEmail(ETxtEmail.text.toString())) {
+                    signIn( ETxtEmail.text.toString(), ETxtPassword.text.toString() )
+                }
+                else
+                {
+                    Toast.makeText(this, "Correo electrónico invalido", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else
+            {
+                Toast.makeText(this, "Datos incompletos, intentalo de nuevo", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    }
+
+    private fun validateLogin(): Boolean {
+        return sharedPreferences.getBoolean( "sesion_iniciada", false )
+    }
+
+    private fun validateEmail(text: String?): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(text).matches()
     }
 
     companion object {
@@ -50,7 +81,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun reload() {
-        TODO("Not yet implemented")
         Log.d(TAG, "reload: " )
     }
 
@@ -63,12 +93,18 @@ class LoginActivity : AppCompatActivity() {
                 {
                     // Logueo completo
                     Log.d(TAG, "signIn: signInWithEmail:success")
+
+                    val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                    editor.putBoolean( "sesion_iniciada" , true )
+                    editor.apply()
+                    editor.commit()
+
                     logIn()
                 }
                 else
                 {
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    Toast.makeText(baseContext, "Authentication failed.",
+                    Toast.makeText(baseContext, "Error, correo o contraseña incorrectos.",
                     Toast.LENGTH_SHORT).show()
                 }
             }
@@ -77,5 +113,6 @@ class LoginActivity : AppCompatActivity() {
     private fun logIn() {
         val intent = Intent(this, IndexActivity::class.java)
         startActivity(intent)
+        finish()
     }
 }

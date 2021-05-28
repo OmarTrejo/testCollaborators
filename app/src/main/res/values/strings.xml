@@ -18,4 +18,8 @@
     <string name="consulta_menu">Colaboradores</string>
     <string name="registro">Nuevo colaborador</string>
     <string name="cerrar_sesion">Salir</string>
+    <string name="message_logout">¿Estas seguro que deseas cerrar sesión?</string>
+    <string name="title">Mensaje</string>
+    <string name="no">No</string>
+    <string name="si">Si, cerrar sesión</string>
 </resources>
