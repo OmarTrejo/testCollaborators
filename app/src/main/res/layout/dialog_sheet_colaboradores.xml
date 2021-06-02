@@ -32,6 +32,7 @@
         />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvColaboradores"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:itemCount="4"
